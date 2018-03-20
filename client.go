@@ -25,6 +25,15 @@ func Version() string {
 	return C.GoString(version)
 }
 
+type Orientation int
+
+const (
+	OrientationPageUp Orientation = iota
+	OrientationPageRight
+	OrientationPageDown
+	OrientationPageLeft
+)
+
 // Client is argument builder for tesseract::TessBaseAPI.
 type Client struct {
 	api C.TessBaseAPI
@@ -231,5 +240,29 @@ func (client *Client) HOCRText() (out string, err error) {
 		return
 	}
 	out = C.GoString(C.HOCRText(client.api))
+	return
+}
+
+// TSVText finally initialize tesseract::TessBaseAPI, execute OCR and returns TSV text.
+func (client *Client) TSVText() (out string, err error) {
+	if err = client.init(); err != nil {
+		return
+	}
+	if err = client.prepare(); err != nil {
+		return
+	}
+	out = C.GoString(C.TSVText(client.api))
+	return
+}
+
+// Orientation will use tesseract to find the orientation of a page
+func (client *Client) Orientation() (out Orientation, err error) {
+	if err = client.init(); err != nil {
+		return
+	}
+	if err = client.prepare(); err != nil {
+		return
+	}
+	out = Orientation(C.Orientation(client.api))
 	return
 }

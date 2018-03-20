@@ -13,6 +13,8 @@ void SetPageSegMode(TessBaseAPI, int);
 int GetPageSegMode(TessBaseAPI);
 char* UTF8Text(TessBaseAPI);
 char* HOCRText(TessBaseAPI);
+char* TSVText(TessBaseAPI);
+int Orientation(TessBaseAPI);
 const char* Version(TessBaseAPI);
 
 #ifdef __cplusplus
